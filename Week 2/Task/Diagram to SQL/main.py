@@ -1,71 +1,52 @@
-from sqlite3.dbapi2 import connect
+import sqlite3
 
-conn = connect("Students_Courses.db")
+def register():
+    username = input("Enter new username: ")
+    password = input("Enter new password: ")
+    name = input("Enter your name: ")
 
-conn.execute("PRAGMA foreign_keys = ON")
+    conn = sqlite3.connect("Students_Courses.db")
+    cursor = conn.cursor()
 
-c = conn.cursor()
+    try:
+        cursor.execute(
+            "INSERT INTO logins (username, password, name) VALUES (?, ?, ?)",
+            (username, password, name)
+        )
+        conn.commit()
+        return "Register success"
+    except:
+        return "Username already exists"
+    finally:
+        conn.close()
 
-sql_create_task = """
-    CREATE TABLE IF NOT EXISTS task (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        description TEXT NOT NULL
-        );
-"""
-sql_create_course_assignment = """
-    CREATE TABLE IF NOT EXISTS course_assignment (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        id_task INTEGER NOT NULL,
-        id_course INTEGER NOT NULL
-    );
-"""
-sql_create_course = """
-    CREATE TABLE IF NOT EXISTS course (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        description TEXT NOT NULL
-        );
-"""
-sql_create_credits = """
-    CREATE TABLE IF NOT EXISTS credits (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        id_course INTEGER NOT NULL,
-        id_student INTEGER NOT NULL,
-        date TEXT NOT NULL,
-        grade TEXT NOT NULL,
-        credits INTEGER NOT NULL,
-        FOREIGN KEY (id_course) REFERENCES course_assignment(id_course)
-    );
-"""
-sql_create_student = """
-    CREATE TABLE IF NOT EXISTS student (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        birthday TEXT NOT NULL,
-        major TEXT NOT NULL
-    );
-"""
-sql_create_task_completion = """
-    CREATE TABLE IF NOT EXISTS task_completion (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        id_task INTEGER NOT NULL,
-        id_student INTEGER NOT NULL,
-        time TEXT NOT NULL,
-        FOREIGN KEY (id_task) REFERENCES course_assignment(id_task),
-        FOREIGN KEY (id_student) REFERENCES credits(id_student)
-    );
-"""
+def login():
+    username = input("Enter username: ")
+    password = input("Enter password: ")
 
-try:
-    c.execute(sql_create_task)
-    c.execute(sql_create_course_assignment)
-    c.execute(sql_create_course)
-    c.execute(sql_create_credits)
-    c.execute(sql_create_student)
-    c.execute(sql_create_task_completion)
-    conn.commit()
-except:
-    print(f"Query error!")
+    conn = sqlite3.connect("Students_Courses.db")
+    cursor = conn.cursor()
 
-conn.close()
+    cursor.execute(
+        "SELECT * FROM logins WHERE username = ? AND password = ?",
+        (username, password)
+    )
+
+    user = cursor.fetchone()
+    conn.close()
+
+    if user:
+        print(f"Login success! Welcome {username}")
+    else:
+        print("Invalid username or password")
+
+while True:
+    choice = input("Choose option (register/login/exit): ").lower()
+    if choice == "register":
+        register()
+    elif choice == "login":
+        login()
+    elif choice == "exit":
+        break
+    else:
+        print("Invalid option")
