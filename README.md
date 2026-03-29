@@ -21,7 +21,7 @@ OOP Pillars: Deep dive into Inheritance, Encapsulation, and Polymorphism.
 Data Persistence: Implementation of serialization and deserialization techniques.
 
 Setup Instructions
-Clone the repository: git clone [repository-link]
+Clone the repository: git clone [https://github.com/MinhDuyNguyen2812/Designing-and-Implementing-Data-Pipeline.git]
 
 Navigate to the desired project or learning module.
 
