@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
-from database import login_user, register_user, get_tasks, add_task, update_task, delete_task
+from app.database import login_user, register_user, get_tasks, add_task, update_task, delete_task
 
 class TaskApp:
     def __init__(self, root):
@@ -35,10 +35,10 @@ class TaskApp:
         self.ent_pass.pack(pady=5)
 
         tk.Button(frame, text="Login", width=15, bg="#4CAF50", fg="white",
-                  command=self.handle_login).pack(side="right", padx= 5, pady=20)
+                  command=self.handle_login).pack(side="right", pady=20)
         
         tk.Button(frame, text="Register", width=15, bg="#2196F3", fg="white", 
-                  command=self.handle_register).pack(side="left", padx=5)
+                  command=self.handle_register).pack(side="left", padx=1)
         
     def handle_login(self):
         u = self.ent_user.get()

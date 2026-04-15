@@ -16,6 +16,8 @@ The learning/ directory documents a weekly progression through Information and C
 
 Weeks 0-2: Basic syntax, data structures, and algorithmic logic.
 
+Week 3-4: Using numpy, pandas into code, practical with data analyse.
+
 OOP Pillars: Deep dive into Inheritance, Encapsulation, and Polymorphism.
 
 Data Persistence: Implementation of serialization and deserialization techniques.

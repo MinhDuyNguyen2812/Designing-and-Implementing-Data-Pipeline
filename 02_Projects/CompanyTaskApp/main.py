@@ -1,9 +1,10 @@
 import tkinter as tk
-from database import create_tables
-from gui import TaskApp
+from app.database import create_tables
+from app.gui import TaskApp
 
 def main():
     create_tables()
+
     root = tk.Tk()
     app = TaskApp(root)
     root.mainloop()

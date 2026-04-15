@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FreshHome – Desktop</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal:       #2d6e6e;
+  --teal-dark:  #1a4a4a;
+  --teal-lt:    #e1f5ee;
+  --orange:     #e07040;
+  --orange-lt:  #fde8d8;
+  --cream:      #f5f0e8;
+  --warm:       #ede8dc;
+  --card:       #fffdf8;
+  --border:     #d8d0be;
+  --text:       #1a1a1a;
+  --muted:      #7a7060;
+  --sidebar-w:  240px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 16px 50px;
+}
+
+/* ─── BROWSER CHROME ─── */
+.browser {
+  width: 1100px;
+  max-width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.18);
+  overflow: hidden;
+  background: #f0ece4;
+}
+
+.browser-bar {
+  background: #e8e2d8;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #ccc8be;
+}
+
+.dots { display: flex; gap: 6px; }
+.dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+}
+.dot.red   { background: #ff5f57; }
+.dot.amber { background: #ffbd2e; }
+.dot.green { background: #28c840; }
+
+.url-bar {
+  flex: 1;
+  background: white;
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 12px;
+  color: var(--muted);
+  border: 1px solid #d0c8bc;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.url-bar .lock { font-size: 10px; color: #4a9470; }
+
+/* ─── APP SHELL ─── */
+.app {
+  display: flex;
+  height: 740px;
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--teal-dark);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebar-logo {
+  padding: 24px 22px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.logo-mark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  width: 34px; height: 34px;
+  background: var(--orange);
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px;
+}
+
+.logo-text {
+  font-family: 'DM Serif Display', serif;
+  font-size: 18px;
+  color: white;
+  letter-spacing: -0.3px;
+}
+
+.sidebar-building {
+  padding: 14px 22px;
+  background: rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.sidebar-building span {
+  display: block;
+  font-size: 13px;
+  color: rgba(255,255,255,0.8);
+  letter-spacing: 0;
+  text-transform: none;
+  margin-top: 2px;
+  font-weight: 500;
+}
+
+.nav-section {
+  padding: 18px 14px 4px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: rgba(255,255,255,0.35);
+  font-weight: 600;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 9px;
+  margin: 2px 8px;
+  cursor: pointer;
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.65);
+  transition: background 0.15s, color 0.15s;
+  font-weight: 400;
+}
+.nav-item:hover { background: rgba(255,255,255,0.08); color: white; }
+.nav-item.active { background: rgba(255,255,255,0.12); color: white; font-weight: 500; }
+
+.nav-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  flex-shrink: 0;
+}
+.nav-item.active .nav-dot { background: var(--orange); }
+
+.nav-badge {
+  margin-left: auto;
+  background: var(--orange);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 20px;
+  padding: 2px 7px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding: 16px 14px;
+}
+
+.user-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--teal-lt);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--teal-dark);
+  flex-shrink: 0;
+}
+
+.user-info .name { font-size: 13px; color: white; font-weight: 500; }
+.user-info .apt  { font-size: 11px; color: rgba(255,255,255,0.45); }
+
+/* ─── MAIN AREA ─── */
+.main {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background: var(--cream);
+}
+
+/* TOP BAR */
+.topbar {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.topbar h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  color: var(--teal-dark);
+  flex: 1;
+}
+
+.topbar-search {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 8px 14px;
+  font-size: 13px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  width: 220px;
+  transition: border-color 0.15s;
+}
+.topbar-search:hover { border-color: var(--teal); }
+
+.topbar-btn {
+  background: var(--teal);
+  color: white;
+  border: none;
+  border-radius: 9px;
+  padding: 9px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.12s;
+}
+.topbar-btn:hover { background: var(--teal-dark); transform: translateY(-1px); }
+
+/* CONTENT */
+.content {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  flex: 1;
+}
+
+/* SCREEN TOGGLE */
+.screen { display: none; flex-direction: column; gap: 26px; }
+.screen.active { display: flex; }
+
+/* STAT ROW */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+}
+
+.stat-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.stat-value {
+  font-family: 'DM Serif Display', serif;
+  font-size: 30px;
+  color: var(--teal-dark);
+  line-height: 1;
+}
+
+.stat-sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.stat-dot {
+  display: inline-block;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+
+/* GRID 2-COL */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+}
+
+/* PANEL */
+.panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.panel-head {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 17px;
+  color: var(--teal-dark);
+}
+
+.panel-link {
+  font-size: 12px;
+  color: var(--orange);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.panel-body { padding: 16px 20px; }
+
+/* SERVICE GRID */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.svc-card {
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.svc-card:hover, .svc-card.active {
+  border-color: var(--teal);
+  background: var(--teal-lt);
+  transform: translateY(-2px);
+}
+
+.svc-icon  { font-size: 28px; margin-bottom: 8px; }
+.svc-name  { font-size: 13px; font-weight: 600; color: var(--teal-dark); margin-bottom: 3px; }
+.svc-avail { font-size: 11px; color: var(--muted); }
+
+.badge {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 3px 9px;
+  font-size: 10px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+.badge.free  { background: #d0f0e0; color: #1a6040; }
+.badge.busy  { background: var(--orange-lt); color: #a04020; }
+.badge.soon  { background: #fff0d0; color: #8a6010; }
+
+/* BOOKING LIST */
+.booking-list { display: flex; flex-direction: column; gap: 0; }
+
+.booking-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.booking-row:last-child { border-bottom: none; }
+.booking-row:hover { background: rgba(45,110,110,0.03); border-radius: 8px; padding-left: 8px; }
+
+.b-icon {
+  width: 40px; height: 40px;
+  border-radius: 11px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.b-icon.laundry { background: #e0f0f0; }
+.b-icon.sauna   { background: var(--orange-lt); }
+.b-icon.gym     { background: #e8f0e0; }
+
+.b-info { flex: 1; }
+.b-name { font-size: 13.5px; font-weight: 600; color: var(--teal-dark); }
+.b-time { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+.b-status {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 8px;
+}
+.b-status.confirmed { background: #d0f0e0; color: #1a6040; }
+.b-status.upcoming  { background: #e8eef8; color: #1a3870; }
+.b-status.pending   { background: #fff0d0; color: #8a6010; }
+
+.b-cancel {
+  font-size: 11px;
+  color: var(--muted);
+  cursor: pointer;
+  text-decoration: underline;
+  flex-shrink: 0;
+}
+.b-cancel:hover { color: var(--orange); }
+
+/* MINI CALENDAR */
+.mini-cal { font-size: 13px; }
+
+.cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.cal-month { font-weight: 600; font-size: 14px; color: var(--teal-dark); }
+.cal-nav { cursor: pointer; color: var(--muted); font-size: 16px; padding: 2px 6px; border-radius: 4px; }
+.cal-nav:hover { background: var(--warm); }
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  text-align: center;
+}
+
+.cal-day-name {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--muted);
+  padding: 4px 0;
+  font-weight: 600;
+}
+
+.cal-day {
+  padding: 6px 4px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12.5px;
+  color: var(--text);
+  transition: background 0.12s;
+}
+.cal-day:hover { background: var(--warm); }
+.cal-day.today { background: var(--teal); color: white; font-weight: 600; }
+.cal-day.has-booking { position: relative; }
+.cal-day.has-booking::after {
+  content: '';
+  position: absolute;
+  bottom: 3px;
+  left: 50%; transform: translateX(-50%);
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--orange);
+}
+.cal-day.other-month { color: #ccc8be; }
+
+/* ─── BOOKING SCREEN ─── */
+.booking-screen { display: flex; gap: 24px; flex: 1; }
+
+.booking-left { flex: 1; display: flex; flex-direction: column; gap: 18px; }
+.booking-right { width: 310px; flex-shrink: 0; display: flex; flex-direction: column; gap: 14px; }
+
+.section-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* Service tabs */
+.svc-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.svc-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--muted);
+  background: white;
+  transition: all 0.15s;
+}
+.svc-tab:hover { border-color: var(--teal-light); color: var(--teal); }
+.svc-tab.active { border-color: var(--teal); background: var(--teal-lt); color: var(--teal-dark); font-weight: 600; }
+
+/* Time slot grid */
+.slot-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.slot {
+  padding: 13px 8px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  background: white;
+  transition: all 0.15s;
+}
+.slot:hover { border-color: var(--teal); color: var(--teal); }
+.slot.active { background: var(--teal); border-color: var(--teal); color: white; }
+.slot.taken  { background: #f5f2ee; border-color: #e0dbd0; color: #bbb; cursor: not-allowed; text-decoration: line-through; }
+.slot .s-sub { font-size: 10px; opacity: 0.65; margin-top: 2px; }
+
+/* Duration */
+.dur-tabs { display: flex; gap: 8px; }
+.dur-tab {
+  flex: 1;
+  padding: 11px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  background: white;
+  transition: all 0.15s;
+}
+.dur-tab.active { background: var(--orange); border-color: var(--orange); color: white; }
+.dur-tab:hover:not(.active) { border-color: var(--orange); color: var(--orange); }
+
+/* Summary panel */
+.summary-panel {
+  background: var(--teal-dark);
+  border-radius: 16px;
+  padding: 22px;
+  color: white;
+}
+.summary-panel h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  margin-bottom: 18px;
+  color: white;
+}
+
+.s-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.s-row:last-of-type { border-bottom: none; margin-bottom: 6px; }
+.s-row .sk { color: rgba(255,255,255,0.55); }
+
+.confirm-btn {
+  width: 100%;
+  background: var(--orange);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: transform 0.15s, box-shadow 0.15s;
+  letter-spacing: 0.2px;
+}
+.confirm-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(224,112,64,0.4); }
+
+/* Quick rules panel */
+.rules-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.rules-list li {
+  font-size: 12.5px;
+  color: var(--muted);
+  padding-left: 14px;
+  position: relative;
+  line-height: 1.5;
+}
+.rules-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--teal);
+}
+
+/* SUCCESS */
+.success-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(26,74,74,0.7);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+.success-overlay.show { display: flex; }
+
+.success-modal {
+  background: var(--card);
+  border-radius: 24px;
+  padding: 48px 44px;
+  width: 430px;
+  text-align: center;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+  animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.s-tick {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: var(--teal-lt);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px;
+  margin: 0 auto 22px;
+}
+
+.success-modal h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 28px;
+  color: var(--teal-dark);
+  margin-bottom: 8px;
+}
+.success-modal p { font-size: 14px; color: var(--muted); margin-bottom: 24px; line-height: 1.6; }
+
+.s-details {
+  background: var(--cream);
+  border-radius: 12px;
+  padding: 16px 20px;
+  text-align: left;
+  margin-bottom: 24px;
+}
+.s-detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 5px 0;
+}
+.s-detail-row .k { color: var(--muted); }
+
+.modal-btns { display: flex; gap: 10px; }
+.btn-primary, .btn-sec {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.12s;
+}
+.btn-primary { background: var(--teal); color: white; }
+.btn-primary:hover { background: var(--teal-dark); }
+.btn-sec { background: var(--cream); color: var(--muted); border: 1px solid var(--border); }
+.btn-sec:hover { background: var(--warm); }
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+</style>
+</head>
+<body>
+
+<div class="browser">
+  <!-- BROWSER BAR -->
+  <div class="browser-bar">
+    <div class="dots">
+      <div class="dot red"></div>
+      <div class="dot amber"></div>
+      <div class="dot green"></div>
+    </div>
+    <div class="url-bar">
+      <span class="lock">🔒</span>
+      freshhome.app/dashboard
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div class="app">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-mark">
+          <div class="logo-icon">🏠</div>
+          <div class="logo-text">FreshHome</div>
+        </div>
+      </div>
+
+      <div class="sidebar-building">
+        Building
+        <span>Merikortteli A</span>
+      </div>
+
+      <div class="nav-section">Menu</div>
+
+      <div class="nav-item active" onclick="switchTab('dashboard')">
+        <div class="nav-dot"></div> Dashboard
+      </div>
+      <div class="nav-item" onclick="switchTab('book')">
+        <div class="nav-dot"></div> Book a Slot
+        <div class="nav-badge">2</div>
+      </div>
+      <div class="nav-item">
+        <div class="nav-dot"></div> My Bookings
+      </div>
+      <div class="nav-item">
+        <div class="nav-dot"></div> History
+      </div>
+
+      <div class="nav-section" style="margin-top:8px;">Settings</div>
+      <div class="nav-item"><div class="nav-dot"></div> Notifications</div>
+      <div class="nav-item"><div class="nav-dot"></div> Account</div>
+
+      <div class="sidebar-footer">
+        <div class="user-row">
+          <div class="avatar">MK</div>
+          <div class="user-info">
+            <div class="name">Matti K.</div>
+            <div class="apt">Apt 4B · Floor 4</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+      <!-- TOPBAR -->
+      <div class="topbar">
+        <h1 id="page-title">Dashboard</h1>
+        <div class="topbar-search">🔍 &nbsp;Search services…</div>
+        <button class="topbar-btn" onclick="switchTab('book')">+ New Booking</button>
+      </div>
+
+      <div class="content">
+
+        <!-- ── DASHBOARD SCREEN ── -->
+        <div class="screen active" id="s-dashboard">
+
+          <!-- STATS -->
+          <div class="stat-row">
+            <div class="stat-card">
+              <div class="stat-label">Bookings this month</div>
+              <div class="stat-value">7</div>
+              <div class="stat-sub">↑ 2 from last month</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Next booking</div>
+              <div class="stat-value" style="font-size:20px;margin-top:4px;">Today 14:00</div>
+              <div class="stat-sub">🧺 Laundry Room A</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Sauna queue</div>
+              <div class="stat-value">3</div>
+              <div class="stat-sub">people ahead of you</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Free slots today</div>
+              <div class="stat-value">12</div>
+              <div class="stat-sub">across all services</div>
+            </div>
+          </div>
+
+          <!-- SERVICE STATUS + CALENDAR -->
+          <div class="grid-2">
+            <div class="panel">
+              <div class="panel-head">
+                <div class="panel-title">Service Status</div>
+                <div class="panel-link" onclick="switchTab('book')">Book now →</div>
+              </div>
+              <div class="panel-body">
+                <div class="service-grid">
+                  <div class="svc-card" onclick="switchTab('book')">
+                    <div class="svc-icon">🧺</div>
+                    <div class="svc-name">Laundry</div>
+                    <div class="svc-avail">Floor 1 · 2 machines</div>
+                    <div class="badge free">2 free</div>
+                  </div>
+                  <div class="svc-card" onclick="switchTab('book')">
+                    <div class="svc-icon">🔥</div>
+                    <div class="svc-name">Sauna</div>
+                    <div class="svc-avail">Floor B1</div>
+                    <div class="badge busy">Occupied</div>
+                  </div>
+                  <div class="svc-card" onclick="switchTab('book')">
+                    <div class="svc-icon">🏋️</div>
+                    <div class="svc-name">Gym</div>
+                    <div class="svc-avail">Floor 2 · 4/8</div>
+                    <div class="badge soon">Half full</div>
+                  </div>
+                  <div class="svc-card" onclick="switchTab('book')">
+                    <div class="svc-icon">🚲</div>
+                    <div class="svc-name">Bike Room</div>
+                    <div class="svc-avail">Basement</div>
+                    <div class="badge free">Open</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-head">
+                <div class="panel-title">March 2026</div>
+                <div style="display:flex;gap:4px;">
+                  <span class="cal-nav">‹</span>
+                  <span class="cal-nav">›</span>
+                </div>
+              </div>
+              <div class="panel-body">
+                <div class="mini-cal">
+                  <div class="cal-grid">
+                    <div class="cal-day-name">Mo</div><div class="cal-day-name">Tu</div>
+                    <div class="cal-day-name">We</div><div class="cal-day-name">Th</div>
+                    <div class="cal-day-name">Fr</div><div class="cal-day-name">Sa</div>
+                    <div class="cal-day-name">Su</div>
+                    <div class="cal-day other-month">24</div><div class="cal-day other-month">25</div>
+                    <div class="cal-day other-month">26</div><div class="cal-day other-month">27</div>
+                    <div class="cal-day other-month">28</div><div class="cal-day other-month">29</div>
+                    <div class="cal-day has-booking">1</div>
+                    <div class="cal-day">2</div><div class="cal-day">3</div>
+                    <div class="cal-day has-booking">4</div><div class="cal-day">5</div>
+                    <div class="cal-day">6</div><div class="cal-day">7</div><div class="cal-day">8</div>
+                    <div class="cal-day">9</div><div class="cal-day has-booking">10</div>
+                    <div class="cal-day">11</div><div class="cal-day">12</div><div class="cal-day">13</div>
+                    <div class="cal-day">14</div><div class="cal-day">15</div>
+                    <div class="cal-day has-booking">16</div><div class="cal-day">17</div>
+                    <div class="cal-day">18</div><div class="cal-day">19</div><div class="cal-day">20</div>
+                    <div class="cal-day">21</div><div class="cal-day">22</div>
+                    <div class="cal-day">23</div><div class="cal-day">24</div>
+                    <div class="cal-day">25</div><div class="cal-day">26</div>
+                    <div class="cal-day">27</div><div class="cal-day">28</div>
+                    <div class="cal-day today">30</div>
+                    <div class="cal-day has-booking">31</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- UPCOMING BOOKINGS -->
+          <div class="panel">
+            <div class="panel-head">
+              <div class="panel-title">Upcoming Bookings</div>
+              <div class="panel-link">View all</div>
+            </div>
+            <div class="panel-body">
+              <div class="booking-list">
+                <div class="booking-row">
+                  <div class="b-icon laundry">🧺</div>
+                  <div class="b-info">
+                    <div class="b-name">Laundry Room A</div>
+                    <div class="b-time">Today · 14:00 – 15:00 · Floor 1</div>
+                  </div>
+                  <div class="b-status confirmed">Confirmed</div>
+                  <div class="b-cancel">Cancel</div>
+                </div>
+                <div class="booking-row">
+                  <div class="b-icon sauna">🔥</div>
+                  <div class="b-info">
+                    <div class="b-name">Sauna</div>
+                    <div class="b-time">Tue 31 Mar · 19:00 – 20:30 · Floor B1</div>
+                  </div>
+                  <div class="b-status upcoming">Upcoming</div>
+                  <div class="b-cancel">Cancel</div>
+                </div>
+                <div class="booking-row">
+                  <div class="b-icon gym">🏋️</div>
+                  <div class="b-info">
+                    <div class="b-name">Fitness Room</div>
+                    <div class="b-time">Wed 1 Apr · 07:30 – 08:30 · Floor 2</div>
+                  </div>
+                  <div class="b-status pending">Pending</div>
+                  <div class="b-cancel">Cancel</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ── BOOKING SCREEN ── -->
+        <div class="screen" id="s-book">
+          <div class="booking-screen">
+
+            <div class="booking-left">
+
+              <!-- SERVICE TABS -->
+              <div class="panel">
+                <div class="panel-head"><div class="panel-title">Select service</div></div>
+                <div class="panel-body">
+                  <div class="svc-tabs">
+                    <div class="svc-tab active" onclick="selectSvc(this)">🧺 Laundry Room A</div>
+                    <div class="svc-tab" onclick="selectSvc(this)">🔥 Sauna</div>
+                    <div class="svc-tab" onclick="selectSvc(this)">🏋️ Fitness Room</div>
+                    <div class="svc-tab" onclick="selectSvc(this)">🚲 Bike Storage</div>
+                    <div class="svc-tab" onclick="selectSvc(this)">🧹 Cleaning Room</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- DATE PICKER -->
+              <div class="panel">
+                <div class="panel-head"><div class="panel-title">Pick a date</div></div>
+                <div class="panel-body">
+                  <div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;">
+                    <div class="slot" style="padding:14px 18px;flex-shrink:0;" onclick="selectDate(this)">
+                      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px">Mon</div>
+                      <div style="font-size:20px;font-weight:700;margin:2px 0">30</div>
+                      <div style="font-size:10px;color:var(--muted)">Mar</div>
+                    </div>
+                    <div class="slot active" style="padding:14px 18px;flex-shrink:0;" onclick="selectDate(this)">
+                      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.8px;opacity:.7">Tue</div>
+                      <div style="font-size:20px;font-weight:700;margin:2px 0">31</div>
+                      <div style="font-size:10px;opacity:.65">Mar</div>
+                    </div>
+                    <div class="slot" style="padding:14px 18px;flex-shrink:0;" onclick="selectDate(this)">
+                      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px">Wed</div>
+                      <div style="font-size:20px;font-weight:700;margin:2px 0">1</div>
+                      <div style="font-size:10px;color:var(--muted)">Apr</div>
+                    </div>
+                    <div class="slot" style="padding:14px 18px;flex-shrink:0;" onclick="selectDate(this)">
+                      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px">Thu</div>
+                      <div style="font-size:20px;font-weight:700;margin:2px 0">2</div>
+                      <div style="font-size:10px;color:var(--muted)">Apr</div>
+                    </div>
+                    <div class="slot" style="padding:14px 18px;flex-shrink:0;" onclick="selectDate(this)">
+                      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px">Fri</div>
+                      <div style="font-size:20px;font-weight:700;margin:2px 0">3</div>
+                      <div style="font-size:10px;color:var(--muted)">Apr</div>
+                    </div>
+                    <div class="slot" style="padding:14px 18px;flex-shrink:0;" onclick="selectDate(this)">
+                      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px">Sat</div>
+                      <div style="font-size:20px;font-weight:700;margin:2px 0">4</div>
+                      <div style="font-size:10px;color:var(--muted)">Apr</div>
+                    </div>
+                    <div class="slot" style="padding:14px 18px;flex-shrink:0;" onclick="selectDate(this)">
+                      <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px">Sun</div>
+                      <div style="font-size:20px;font-weight:700;margin:2px 0">5</div>
+                      <div style="font-size:10px;color:var(--muted)">Apr</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TIME SLOTS -->
+              <div class="panel">
+                <div class="panel-head">
+                  <div class="panel-title">Available time slots</div>
+                  <div style="font-size:12px;color:var(--muted);">
+                    <span style="display:inline-block;width:10px;height:10px;background:var(--teal);border-radius:3px;margin-right:4px;"></span>Selected
+                    <span style="display:inline-block;width:10px;height:10px;background:#f0ece4;border-radius:3px;margin-left:10px;margin-right:4px;"></span>Taken
+                  </div>
+                </div>
+                <div class="panel-body">
+                  <div class="slot-grid">
+                    <div class="slot taken">08:00<div class="s-sub">Taken</div></div>
+                    <div class="slot taken">09:00<div class="s-sub">Taken</div></div>
+                    <div class="slot" onclick="selectSlot(this)">10:00<div class="s-sub">1 hr</div></div>
+                    <div class="slot active" onclick="selectSlot(this)">11:00<div class="s-sub">1 hr</div></div>
+                    <div class="slot" onclick="selectSlot(this)">12:00<div class="s-sub">1 hr</div></div>
+                    <div class="slot" onclick="selectSlot(this)">13:00<div class="s-sub">1 hr</div></div>
+                    <div class="slot" onclick="selectSlot(this)">14:00<div class="s-sub">1 hr</div></div>
+                    <div class="slot taken">15:00<div class="s-sub">Taken</div></div>
+                    <div class="slot" onclick="selectSlot(this)">16:00<div class="s-sub">1 hr</div></div>
+                    <div class="slot" onclick="selectSlot(this)">17:00<div class="s-sub">1 hr</div></div>
+                    <div class="slot" onclick="selectSlot(this)">18:00<div class="s-sub">1 hr</div></div>
+                    <div class="slot taken">19:00<div class="s-sub">Taken</div></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- DURATION -->
+              <div class="panel">
+                <div class="panel-head"><div class="panel-title">Duration</div></div>
+                <div class="panel-body">
+                  <div class="dur-tabs">
+                    <div class="dur-tab active" onclick="selectDur(this)">30 min</div>
+                    <div class="dur-tab" onclick="selectDur(this)">1 hour</div>
+                    <div class="dur-tab" onclick="selectDur(this)">1.5 hours</div>
+                    <div class="dur-tab" onclick="selectDur(this)">2 hours</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- RIGHT SIDEBAR -->
+            <div class="booking-right">
+
+              <!-- SUMMARY -->
+              <div class="summary-panel">
+                <h3>Booking Summary</h3>
+                <div class="s-row"><span class="sk">Service</span><span>Laundry Room A</span></div>
+                <div class="s-row"><span class="sk">Date</span><span>Tue 31 Mar</span></div>
+                <div class="s-row"><span class="sk">Time</span><span>11:00</span></div>
+                <div class="s-row"><span class="sk">Duration</span><span>30 min</span></div>
+                <div class="s-row"><span class="sk">Location</span><span>Floor 1</span></div>
+                <div class="s-row" style="padding-top:10px;font-weight:700;font-size:14px;">
+                  <span>Total cost</span><span>Free</span>
+                </div>
+                <button class="confirm-btn" onclick="showSuccess()">✓ Confirm Booking</button>
+              </div>
+
+              <!-- RULES -->
+              <div class="panel">
+                <div class="panel-head"><div class="panel-title">House Rules</div></div>
+                <div class="panel-body">
+                  <ul class="rules-list">
+                    <li>Cancel at least 2 hours before your slot</li>
+                    <li>Leave the space clean after use</li>
+                    <li>Maximum 2 bookings per day per resident</li>
+                    <li>Report any machine faults to building manager</li>
+                    <li>Children under 12 must be accompanied</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- NEXT AVAILABLE -->
+              <div class="panel">
+                <div class="panel-head"><div class="panel-title">My bookings</div></div>
+                <div class="panel-body">
+                  <div style="display:flex;flex-direction:column;gap:8px;">
+                    <div style="display:flex;align-items:center;gap:10px;font-size:12.5px;">
+                      <div style="width:32px;height:32px;border-radius:8px;background:#e0f0f0;display:flex;align-items:center;justify-content:center;font-size:14px;">🧺</div>
+                      <div>
+                        <div style="font-weight:600;color:var(--teal-dark)">Laundry Room A</div>
+                        <div style="color:var(--muted);font-size:11px;">Today · 14:00</div>
+                      </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:10px;font-size:12.5px;">
+                      <div style="width:32px;height:32px;border-radius:8px;background:var(--orange-lt);display:flex;align-items:center;justify-content:center;font-size:14px;">🔥</div>
+                      <div>
+                        <div style="font-weight:600;color:var(--teal-dark)">Sauna</div>
+                        <div style="color:var(--muted);font-size:11px;">Tue 31 Mar · 19:00</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="success-overlay" id="success-overlay" onclick="closeSuccess(event)">
+  <div class="success-modal">
+    <div class="s-tick">✅</div>
+    <h2>Booking Confirmed!</h2>
+    <p>Your slot has been reserved. A confirmation<br>has been sent to your account.</p>
+    <div class="s-details">
+      <div class="s-detail-row"><span class="k">Service</span><span>Laundry Room A</span></div>
+      <div class="s-detail-row"><span class="k">Date</span><span>Tuesday, 31 March 2026</span></div>
+      <div class="s-detail-row"><span class="k">Time</span><span>11:00 – 11:30</span></div>
+      <div class="s-detail-row"><span class="k">Location</span><span>Floor 1</span></div>
+      <div class="s-detail-row"><span class="k">Booking ID</span><span style="color:var(--teal);font-weight:600">#FH-2026-0331</span></div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-sec" onclick="closeSuccess()">Close</button>
+      <button class="btn-primary" onclick="closeSuccess();switchTab('dashboard')">Go to Dashboard</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('s-' + tab).classList.add('active');
+  const titles = { dashboard: 'Dashboard', book: 'Book a Slot' };
+  document.getElementById('page-title').textContent = titles[tab] || 'Dashboard';
+  const idx = { dashboard: 0, book: 1 }[tab] ?? 0;
+  document.querySelectorAll('.nav-item')[idx]?.classList.add('active');
+}
+
+function selectSvc(el) {
+  el.closest('.svc-tabs').querySelectorAll('.svc-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function selectDate(el) {
+  el.parentElement.querySelectorAll('[onclick="selectDate(this)"]').forEach(d => d.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function selectSlot(el) {
+  if (el.classList.contains('taken')) return;
+  el.closest('.slot-grid').querySelectorAll('.slot').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function selectDur(el) {
+  el.closest('.dur-tabs').querySelectorAll('.dur-tab').forEach(d => d.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function showSuccess() {
+  document.getElementById('success-overlay').classList.add('show');
+}
+
+function closeSuccess(e) {
+  if (!e || e.target === document.getElementById('success-overlay')) {
+    document.getElementById('success-overlay').classList.remove('show');
+  }
+}
+</script>
+</body>
+</html>

@@ -1,9 +1,17 @@
 import sqlite3
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DB_PATH = os.path.join(BASE_DIR, "database", "company_tasks.db")
 
 def connect_db():
-    conn = sqlite3.connect("company_tasks.db")
-    conn.execute("PRAGMA foreign_keys = ON")
-    return conn
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        conn.execute("PRAGMA foreign_keys = ON")
+        return conn
+    except sqlite3.Error as e:
+        print(f"Error connecting to database: {e}")
+        return None
 
 def create_tables():
     conn = connect_db()
@@ -31,7 +39,7 @@ def create_tables():
 def add_task(user_id, title, desc=""):
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO tasks (user_id, title, description, status) VALUES (?, ?, ?, ?)",\
+    cursor.execute("INSERT INTO tasks (user_id, title, description, status) VALUES (?, ?, ?, ?)",
                     (user_id, title, desc, 'Pending'))
 
     conn.commit()
